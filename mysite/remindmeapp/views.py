@@ -41,15 +41,18 @@ def process_text(input):
         elif 'hi' in input or 'hello' in input or 'good morning' in input or 'hey' in input :
             speak= "Hello, how are you?"
             return speak, generic_audio
-                
-        elif 'fine' in input or 'well' in input:
-            speak="Good to hear"
+        
+        elif 'how about you' in input or 'about you' in input:
+            speak="Feeling good, what would you like to do?"
+            return speak, generic_audio
+        
+        elif 'fine' in input or 'well' in input or 'good' in input or 'okay' in input or 'ok' in input:
+            speak="Good to hear, what can I do for you?"
             return speak, generic_audio
 
         elif "define yourself" in input :
-            speak='''Hello, I am Remind me . Your personal Assistant. 
-            I am here to make your life easier. You can command me to perform 
-            various tasks such as Reminding you daily essential duties or calculating sums or opening applications etcetra'''
+            speak='''Hello, I am KIN. A virtual assistant. You can ask me to perform 
+            various tasks such as reminding you to do things, calculations and so on'''
             return speak, generic_audio
             
         elif "who are you" in input : 
@@ -92,7 +95,7 @@ def process_text(input):
         elif 'remind me' in input:
             global text1
             text1=input
-            chat_response= "In how many minutes"
+            chat_response= "In how many minutes?"
             return chat_response,generic_audio
         
         elif 'minutes' in input or 'minute' in input:
@@ -114,10 +117,13 @@ def process_text(input):
         
         elif "good night" in input or "bye" in input or "good bye" in input:
             return "See you later",generic_audio
-            
+        
+        elif "thank" in input:
+            return "You're welcome",generic_audio
+
         else:
             
-            return "Null","hello"
+            return "Say that again?","hello"
 
     except :
         

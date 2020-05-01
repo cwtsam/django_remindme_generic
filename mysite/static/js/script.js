@@ -44,6 +44,7 @@ function create_bubble_user() {
 		div.appendChild(para);
 		container.appendChild(div);
 		count_childs();
+		//var msg = new SpeechSynthesisUtterance('Hello World');
 
 		chat_respond(input.value).then((json) => {
 				reply = json['message']['text'];
@@ -55,15 +56,30 @@ function create_bubble_user() {
 			});
 
 		setTimeout(function() {
-			create_bubble_bot(reply);
-			audioPlayer.setAttribute('src',audiosource);
-			audioPlayer.load();
-			audioPlayer.play();
+			playSound();
 		}, 500); // displays alert box after 500 milliseconds, after half a second.
 		
 		input.value = '';
 	}
 }
+
+
+function playSound(){
+	var n = reply.includes("song");
+	if (!n) {
+		create_bubble_bot(reply);
+		var msg = new window.SpeechSynthesisUtterance(reply);
+		window.speechSynthesis.cancel();
+		window.speechSynthesis.speak(msg);
+		console.log('web speech synthesis');
+	} else{
+		create_bubble_bot(reply);
+		audioPlayer.setAttribute('src',audiosource);
+		audioPlayer.load();
+		//audioPlayer.play();
+	}
+}
+
 
 async function chat_respond(str){
 	var message = {
@@ -134,10 +150,11 @@ function reminder(){
 		});
 		if (remindercheck) { //if true
 			setTimeout(function() {
-				create_bubble_bot(reply);
-				audioPlayer.setAttribute('src',audiosource);
-				audioPlayer.load();
-				audioPlayer.play();
+				playSound();
+				//create_bubble_bot(reply);
+				//audioPlayer.setAttribute('src',audiosource);
+				//audioPlayer.load();
+				//audioPlayer.play();
 				reminded = true;
 			}, 500);
 		}
@@ -179,7 +196,7 @@ function startButton(event) {
 	  upgrade(); //if it does not, check user to upgrade browser
   } else {
 	  var recognition = new webkitSpeechRecognition();
-	  recognition.continuous = false; //if false, speech recognition will stop when user stops talking
+	  recognition.continuous = true; //if false, speech recognition will stop when user stops talking
 	  recognition.interimResults = true; //shows interim results, if false, results from are final
   
 	  recognition.onstart = function() { //recognition.start() that is called by pressing mic button calls this onstart event ahndler
@@ -263,10 +280,11 @@ function create_bubble_user_speech(str) {
 			});
 
 		setTimeout(function() {
-			create_bubble_bot(reply);
-			audioPlayer.setAttribute('src',audiosource);
-			audioPlayer.load();
-			audioPlayer.play();
+			playSound();
+			//create_bubble_bot(reply);
+			//audioPlayer.setAttribute('src',audiosource);
+			//audioPlayer.load();
+			//audioPlayer.play();
 		}, 500); // displays alert box after 500 milliseconds, after half a second.
 		
 		//str = '';
