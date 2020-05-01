@@ -1,1 +1,1 @@
-"# django_remindme_model" 
+"# django_remindme_generic" 
