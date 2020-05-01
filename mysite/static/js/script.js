@@ -28,7 +28,7 @@ window.onload=function(){ //somehow we need to load first or not it will return 
         event.preventDefault();
         create_bubble_user();
 	});
-	check_reminder(); //polling for any reminders
+	//check_reminder(); //polling for any reminders
 }
 
 function create_bubble_user() {
@@ -71,7 +71,6 @@ function playSound(){
 		var msg = new window.SpeechSynthesisUtterance(reply);
 		window.speechSynthesis.cancel();
 		window.speechSynthesis.speak(msg);
-		console.log('web speech synthesis');
 	} else{
 		create_bubble_bot(reply);
 		audioPlayer.setAttribute('src',audiosource);
@@ -115,7 +114,7 @@ function create_bubble_bot(str) {
 }
 
 function count_childs() {
-	var convolength = 7
+	var convolength = 7;
 	var children = container.children;
 	if (children.length > convolength) {
 		while (children.length > convolength) {
@@ -177,7 +176,7 @@ function reminder(){
 
 function startButton(event) {
 	if (recognizing) {
-	  recognition.stop();
+	  recognition.stop(); // recognition stops when pressing mic button again
 	  return;
 	}
 	final_transcript = '';
@@ -225,6 +224,10 @@ function startButton(event) {
 			ignore_onend = true;
 		  }
 	  };
+
+	  recognition.onspeechend = function() {
+	  	console.log('Speech has stopped being detected');
+	  };
   
 	  recognition.onend = function() {
 		  recognizing = false;
@@ -247,6 +250,8 @@ function startButton(event) {
 	  recognition.onresult = function(event) { // for each set of results, it calls this event handler
 		  var interim_transcript = '';
 		  for (var i = event.resultIndex; i < event.results.length; ++i) { //appends any new final text
+		  	clearTimeout(speechtimeout);
+		  	setSpeechTimeout();
 			if (event.results[i].isFinal) {
 			  final_transcript += event.results[i][0].transcript;
 			} else {
@@ -258,6 +263,12 @@ function startButton(event) {
 		  interim_span.innerHTML = linebreak(interim_transcript);
 	  };
   }
+
+ var speechtimeout;
+
+ function setSpeechTimeout () {
+ 	speechtimeout = setTimeout(function() {recognition.stop(); }, 5000); // stop recogntion after 5 seconds
+ }
   
 function create_bubble_user_speech(str) {
 	if (str != '') {
