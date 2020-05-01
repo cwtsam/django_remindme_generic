@@ -1,42 +1,34 @@
 from django.conf import settings
-
-from RTVC import demo_cli
-
 from django.shortcuts import render
 from django.http import HttpResponse
-import json
 from django.views.decorators.csrf import csrf_exempt
+import json
 
-
+#from RTVC import demo_cli
 import random
 import asyncio
 import time
-
 import wolframalpha # to calculate strings into formula 
-
-import time
-
-#text1='remind me remainder'
 
 status_variable="Null"
 Rem_response=""
 Rem_source=""
-
+generic_audio = "hello"
 
 loop=asyncio.get_event_loop()
 def pushremiders(args1):
     global status_variable
     global Rem_source,Rem_response
     print("asyncio process is going on")
-    asource=demo_cli.maux(args1[1],123)
-    Rem_response=args1[1]
-    Rem_source=asource  
+    #asource=demo_cli.maux(args1[1],123)
+    Rem_response = args1[1]
+    #Rem_source=asource  
+    Rem_source = generic_audio 
     time.sleep(args1[0])
     status_variable="ready"
     print("printing argument to push")
     print(args1[1])
     print(asource)
-
 
 def process_text(input): 
     try: 
@@ -44,34 +36,33 @@ def process_text(input):
         if 'search' in input or 'play' in input: 
             # a basic web crawler using selenium 
             x=search_web(input) 
-
-            return x,"output_04"
+            return x, generic_audio
         
         elif 'hi' in input or 'hello' in input or 'good morning' in input or 'hey' in input :
             speak= "Hello, how are you?"
-            return speak,"output_00"
+            return speak, generic_audio
                 
         elif 'fine' in input or 'well' in input:
             speak="Good to hear"
-            return speak,"output_01"
+            return speak, generic_audio
 
         elif "define yourself" in input :
             speak='''Hello, I am Remind me . Your personal Assistant. 
             I am here to make your life easier. You can command me to perform 
             various tasks such as Reminding you daily essential duties or calculating sums or opening applications etcetra'''
-            return speak,"output_10"
+            return speak, generic_audio
             
         elif "who are you" in input : 
             speak="Who do you think?"
-            return speak,"output_06"
+            return speak,generic_audio
 
         elif "who made you" in input or "created you" in input: 
             speak = "I have been created by Augmented Human lab."
-            return speak
+            return speak,generic_audio
 
         elif "augmented human lab" in input:# just 
             speak = """Augmented Human Lab is the Best Research Lab."""
-            return speak
+            return speak,generic_audio
 
         elif "calculate" in input.lower(): 
             
@@ -84,25 +75,25 @@ def process_text(input):
             res = client.query(' '.join(query)) 
             answer = next(res.results).text 
             
-            return "The answer is " + answer
+            return "The answer is "+answer,generic_audio
         
         elif 'weather' in input:
             speak="Sunny but it’s not a good idea to go out now"
-            return speak,"output_03"
+            return speak,generic_audio
         
         elif 'shakespeare' in input:
             speak="To be or not to be, that is the question..."
-            return speak,"output_05"
+            return speak,generic_audio
         
         elif 'play' in input and 'song' in input:
             speak="Playing a song for you"
-            return speak,"song"
+            return speak,generic_audio
         
         elif 'remind me' in input:
             global text1
             text1=input
             chat_response= "In how many minutes"
-            return chat_response,"output_07"
+            return chat_response,generic_audio
         
         elif 'minutes' in input or 'minute' in input:
             chat_response= "Okay I'll remind you buddy"
@@ -112,19 +103,17 @@ def process_text(input):
             print(tim[0])
             print("global text :"+ text1)
 
-            indx=text1.lower().replace("remind me","hey reminding you")
+            indx=text1.lower().replace("remind me","Hey reminding you")
             #indx="hey reminding you"
             print(indx)
             args1=[tim[0]*30,indx]
             
             loop.run_in_executor(None,pushremiders,args1)
           
-
-            return chat_response,"output_08"
- 
+            return chat_response,generic_audio
         
         elif "good night" in input or "bye" in input or "good bye" in input:
-            return "See you later","output_02"
+            return "See you later",generic_audio
             
         else:
             
@@ -200,7 +189,6 @@ def get_response(request):
             audio_source=Rem_source
             #chat_response="reminderminder"
             #audio_source = "hello"
-            
             print("Printing Ready reminder variables inside post request :")
             print(chat_response)
             print(audio_source)

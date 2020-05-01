@@ -21,8 +21,8 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 #PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 #sys.path.append(os.path.join(BASE_DIR, 'RVTC_mock'))
 #print(sys.path)
-sys.path.append(os.path.join(BASE_DIR, 'RTVC'))
-print(sys.path)
+#sys.path.append(os.path.join(BASE_DIR, 'RTVC'))
+#print(sys.path)
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
